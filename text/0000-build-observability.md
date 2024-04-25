@@ -15,7 +15,7 @@
 This RFC proposes leveraging [OpenTelemetry](https://opentelemetry.io/) to
 grant platform operators and buildpack operators more insight into buildpack
 performance and behavior. This RFC describes new opt-in functionality
-for both pack and the buildpack spec such that OpenTelemetry data may be
+for pack, the lifecycle, and the buildpack spec such that OpenTelemetry data may be
 exported to the build file system.
 
 # Definitions
