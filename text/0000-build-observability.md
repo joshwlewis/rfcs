@@ -80,6 +80,10 @@ telemetry files are in OTLP compatible format, so may be exported to one or
 more OpenTelemetry backends like Honeycomb, Prometheus, and [many
 others](https://opentelemetry.io/ecosystem/vendors/).
 
+Additionally, these traces may be correlated with traces in a platform
+operator's system via context propagation. The `CNB_OTEL_TRACEPARENT` may be
+provided by a platform to the build environment, such that generated traces
+inherit `trace-id` and `parent-id` from platform systems.
 
 # How it Works
 [how-it-works]: #how-it-works
@@ -217,6 +221,15 @@ the user and/or platform. However, they should be write protected
 to prevent malicious buildpacks from injecting tracing data into other
 buildpack or lifecycle telemetry files.
 
+
+### Context Propagation
+
+To allow correlation of lifecycle and buildpack traces to traces in platform
+operator's systems, `CNB_OTEL_TRACEPARENT` may be provided for `lifecycle` and
+buildpacks. The value of this env var should follow
+[W3C Trace Context specification for traceparent field values](https://www.w3.org/TR/trace-context/#traceparent-header-field-values).
+If provided, generated traces by lifecycle and buildpacks shall inherit the
+`trace-id` and `parent-id` provided therein.
 
 ### Consumption
 
