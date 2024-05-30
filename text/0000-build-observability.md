@@ -66,9 +66,9 @@ Format](https://opentelemetry.io/docs/specs/otel/protocol/file-exporter/).
 
 In this solution, each lifecycle phase would write a `.jsonl` file with
 tracing data for that phase. For example, `lifecycle detector --telemetry`
-would write to `/cnb/telemetry/lifecycle-detect.jsonl`. Additionally each
+would write to `/layers/lifecycle-detect.jsonl`. Additionally each
 buildpack may also write tracing data to it's own `.jsonl` files (at
-`/cnb/telemetry/{BUILDPACK_ID}.jsonl`).
+`/layers/#{buildpack-id}.jsonl`).
 
 These `.jsonl` files may be read by platform operators for consumption,
 transformation, enrichment, and/or export to an OpenTelemetry backend. Given
@@ -93,7 +93,7 @@ inherit `trace-id` and `parent-id` from platform systems.
 If `lifecycle` is provided the telemetry opt-in flag (such as `--telemetry`),
 `lifecycle` phases (such as `detect`, `build`, `export`) may emit an
 OpenTelemetry File Export with tracing data to a known location, such as
-`/cnb/telemetry/lifecycle-detect.jsonl` with contents like this:
+`/layers/lifecycle-detect.jsonl` with contents like this:
 
 ```json
 {
@@ -149,7 +149,7 @@ OpenTelemetry File Export with tracing data to a known location, such as
 ### Buildpack telemetry files
 
 During a buildpack's `detect` or `build` execution, a buildpack may emit
-an OpenTelemetry File Export with tracing data to `/cnb/telemetry/#{buildpack-id}.jsonl`
+an OpenTelemetry File Export with tracing data to `/layers/#{buildpack-id}.jsonl`
 with contents like this:
 
 ```json
