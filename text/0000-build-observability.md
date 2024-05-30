@@ -46,7 +46,7 @@ builds and buildpacks and as a result, provide better service and build
 experiences.
 
 To protect privacy and prevent unnecessary collection of data, this
-functionality should be optional and anonymous.
+functionality shall be optional and anonymous.
 
 # What it is
 [what-it-is]: #what-it-is
@@ -221,7 +221,7 @@ buildpack or lifecycle telemetry files.
 ### Consumption
 
 This RFC leaves the consumption of telemetry files to the platform operator.
-Platform operators choosing to use these metrics need to read them either during
+Platform operators choosing to use these metrics may read them either during
 or after the build. This can be done using existing OpenTelemetry libraries.
 Platform operators may choose to optionally enrich or modify the tracing data
 as they see fit (with data like `instance_id` or `build_id`). Platform
@@ -241,6 +241,16 @@ backend):
 - View or query span durations
 - View or query error types and/or messages
 - and more
+
+### Intent
+
+The purpose and intent of these files is to provide anonymous build
+observability data for users and platform operators. These files shall not
+be used for other intents. For example:
+
+- These files shall not be used as an API, contract, or communication mechanism
+  between buildpacks.
+- These files shall not record any personally identifiable information.
 
 # Migration
 [migration]: #migration
@@ -262,9 +272,9 @@ design:
 2) This functionality emits telemetry data only to the build file system. For
   `pack` users, the telemetry files are stored in docker volumes on the local
   machine. Neither `pack` nor `lifecycle` will "phone home" with telemety data.
-3) Neither `pack` nor `lifecycle` collect user-identifiable data (no emails,
-   usernames, IP addresses, etc.), so the telemetry data emitted by `lifecycle`
-   will also be free of user-identifiaible data.
+3) Neither `pack` nor `lifecycle` collect personally identifiable information
+   (no emails, usernames, IP addresses, etc.), so the telemetry data emitted by
+   `lifecycle` will also be free of personally identifiable information.
 
 ### File Export Format Status
 
