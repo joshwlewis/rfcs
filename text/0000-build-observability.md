@@ -68,7 +68,7 @@ In this solution, each lifecycle phase would write a `.jsonl` file with
 tracing data for that phase. For example, `lifecycle detector --telemetry`
 would write to `/layers/lifecycle-detect.jsonl`. Additionally each
 buildpack may also write tracing data to it's own `.jsonl` files (at
-`/layers/#{buildpack-id}.jsonl`).
+`/layers/#{buildpack-id}@#{buildpack-version}.jsonl`).
 
 These `.jsonl` files may be read by platform operators for consumption,
 transformation, enrichment, and/or export to an OpenTelemetry backend. Given
@@ -149,7 +149,7 @@ OpenTelemetry File Export with tracing data to a known location, such as
 ### Buildpack telemetry files
 
 During a buildpack's `detect` or `build` execution, a buildpack may emit
-an OpenTelemetry File Export with tracing data to `/layers/#{buildpack-id}.jsonl`
+an OpenTelemetry File Export with tracing data to `/layers/#{buildpack-id}@#{buildpack-version}.jsonl`
 with contents like this:
 
 ```json
@@ -342,15 +342,6 @@ Discuss prior art, both the good and bad.
 
 # Unresolved Questions
 [unresolved-questions]: #unresolved-questions
-
-- What file paths should be used for lifecycle telemetry?
-    - Does `lifecycle` emit files in other places that should be matched?
-
-- What file paths should be used for buildpack telemetry?
-    - `/layers` paths are not availble during detect, but `detect` tracing is
-      desirable.
-    - `/workspace` may not make sense, since telemetry files probably
-      shouldn't be a part of the build result image.
 
 
 # Spec. Changes (OPTIONAL)
