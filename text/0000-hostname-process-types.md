@@ -1,6 +1,6 @@
 # Meta
 
-- Name: Hostname Compatible Process Types
+- Name: DNS Label Compatible Process Types
 - Start Date: 2025-03-30
 - Author(s): @joshwlewis
 - Status: Draft <!-- Acceptable values: Draft, Approved, On Hold, Superseded -->
@@ -11,19 +11,19 @@
 
 # Summary
 
-Process types in the Cloud Native Buildpacks Buildpack specification are less restrictive than the RFC 1123 2.1 host name definition. Therefore, CNB process types may not be compatible with internet routing or kubernetes resource naming. This RFC proposes to restrict CNB process types to meet RFC 1123 2.1 and increase usage compatibility with other CNCF / OSS usage.
+Process types in the Cloud Native Buildpacks buildpack specification are less restrictive than the RFC 1123 DNS label definition. Therefore, CNB process types may not be compatible with internet routing or kubernetes resource naming. This RFC proposes to restrict CNB process types to meet RFC 1123 and increase usage compatibility with other CNCF / OSS usage.
 
 # Definitions
 
-RFC 1123 Requirements for Internet Hosts Section 2.1: The IETF ["Requirements for Internet Hosts" RFC](https://datatracker.ietf.org/doc/html/rfc1123#section-2.1) describes the syntax for host names on the internet.
-Kubernetes Resource Names: Many resource names are restricted to RFC 1123, as outlined [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
-Process Types: The name of a process in a Cloud Native Buildpacks result as [described in `launch.toml`](https://github.com/buildpacks/spec/blob/main/buildpack.md#launchtoml-toml).
+**RFC 1123**: The IETF ["Requirements for Internet Hosts" RFC](https://datatracker.ietf.org/doc/html/rfc1123#section-2.1) describes the syntax for DNS host names, domain names, and labels.
+**Kubernetes Resource Names**: Many resource names are restricted to RFC 1123, as outlined [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
+**Process Types**: The name of a process in a Cloud Native Buildpacks result as [described in `launch.toml`](https://github.com/buildpacks/spec/blob/main/buildpack.md#launchtoml-toml).
 
 # Motivation
 
 The images resulting from CNB builds are often deployed to internet connected environments, where it's useful to connect or manage the image lifecycle with a domain name.
 
-For example, after building a web service image with Cloud Native Buildpacks, developers might want to expose various processes to the internet like static-assets.myapp.com and api.myapp.com. However, process types may currently include `_`, `.`, and/or `[A-Z]`, making process types like `Static_Assets` allowed, but not internet routable -- `Static_Assets.myapp.com` is not a valid domain name.
+For example, after building a web service image with Cloud Native Buildpacks, developers might want to expose various processes to the internet like static-assets.myapp.com and api.myapp.com. However, process types may currently include `_`, making process types like `Static_Assets` allowed, but not internet routable -- `Static_Assets.myapp.com` is not a valid domain name.
 
 Or, developers might want to manage Kubernetes resources dynamically using process types defined in the resulting image:
 
@@ -37,7 +37,7 @@ However, while CNB allows a `Static_Assets` process type, Kubernetes rejects it 
 object name does not conform to Kubernetes naming requirements: "Static_Assets"
 ```
 
-These incompatibilities make using process types in dynamic scenarios challenging and/or impossible.
+These incompatibilities make using process types in dynamic scenarios challenging.
 
 # What it is
 
@@ -45,25 +45,19 @@ The current Buildpack specification defines these process type restrictions:
 
 > MUST only contain numbers, letters, and the characters ., \_, and -.
 
-While RFC 1123 uses a stricter syntax with these notable differences:
+While DNS Labels as defined in RFC 1123 are more restrictive. Some notable differences:
 
 - Underscores (`_`) are not allowed
 - Periods (`.`) are not allowed
 - Dashes ('-') are not allowed as the first or last character
 - Uppercase and lowercase letters are not differentiated
-- Must be 63 characters or less
+- Must be less than 63 characters
 
-The buildpack specification will be modified to match RFC 1123 2.1.
+The buildpack specification will be modified to match RFC 1123 for DNS Labels.
 
 # How it Works
 
-The platform specification will be changed to reject process types that do not comply with RFC 1123 2.1. For maximum compatibility with Kubernetes resource names, the Kubernetes regular expression will be used:
-
-```
-/[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/
-```
-
-When a process type fails to meet this expression, appropriate error messaging may be given by the platform, for example:
+The platform specification will be changed to reject process types that do not comply with RFC 1123 DNS Labels. When a process type fails to meet this expression, appropriate error messaging may be given by the platform, for example:
 
 ```
 The "Static_Assets" process type must comply with RFC 1123 host name syntax. Underscores are not allowed. Uppercase letters are not allowed."
@@ -82,6 +76,20 @@ This may require buildpacks to change the way process types are defined. For bui
 - It's a breaking API change and will cause ecosystem churn.
 
 # Alternatives
+
+## Enforce RFC 1123 host names
+
+Instead of enforcing the DNS label syntax, enforce the host name syntax. This would allow periods (in correct postions) and allow up to 254 characters.
+
+Pros:
+
+- Less restrictive
+- would allow internet routing and kubernetes compatibility.
+
+Cons:
+
+- Buildpacks are unlikely to know/set the correct fully qualified domain for an image that might be deployed many places
+- Deployment platforms couldn't use use process types as a subdomain (since the buildpack may have chosen a 254 character process type)
 
 ## Do Nothing
 
