@@ -16,7 +16,9 @@ Process types in the Cloud Native Buildpacks buildpack specification are less re
 # Definitions
 
 **RFC 1123**: The IETF ["Requirements for Internet Hosts" RFC](https://datatracker.ietf.org/doc/html/rfc1123#section-2.1) describes the syntax for DNS host names, domain names, and labels.
+
 **Kubernetes Resource Names**: Many resource names are restricted to RFC 1123, as outlined [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
+
 **Process Types**: The name of a process in a Cloud Native Buildpacks result as [described in `launch.toml`](https://github.com/buildpacks/spec/blob/main/buildpack.md#launchtoml-toml).
 
 # Motivation
