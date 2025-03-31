@@ -104,7 +104,11 @@ N/A
 # Unresolved Questions
 
 - Are there additional resources in the spec that should also have this restriction?
+
   - Image names? (probably not, given it's common to use url-based image names with periods and slashes)
+
+- Is this change worth creating a new Buildpack API version?
+  - Maybe not on it's own, but perhaps it could be bundled with other features.
 
 # Spec. Changes (OPTIONAL)
 
