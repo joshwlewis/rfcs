@@ -11,12 +11,12 @@
 
 # Summary
 
-Process types in the Cloud Native Buildpacks Buildpack specification are less restrictive than the RFC1123 2.1 host name definition. Therefore, CNB process types may not be compatible with internet routing or kubernetes resource naming. This RFC proposes to restrict CNB process names to meet RFC1123 2.1 and increase usage compatibility with other CNCF / OSS usage.
+Process types in the Cloud Native Buildpacks Buildpack specification are less restrictive than the RFC 1123 2.1 host name definition. Therefore, CNB process types may not be compatible with internet routing or kubernetes resource naming. This RFC proposes to restrict CNB process types to meet RFC 1123 2.1 and increase usage compatibility with other CNCF / OSS usage.
 
 # Definitions
 
-RFC1123 Requirements for Internet Hosts Section 2.1: The IETF ["Requirements for Internet Hosts" RFC](https://datatracker.ietf.org/doc/html/rfc1123#section-2.1) describes the syntax for host names on the internet.
-Kubernetes Resource Names: Many resource names are restricted to RFC1123, as outlined [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
+RFC 1123 Requirements for Internet Hosts Section 2.1: The IETF ["Requirements for Internet Hosts" RFC](https://datatracker.ietf.org/doc/html/rfc1123#section-2.1) describes the syntax for host names on the internet.
+Kubernetes Resource Names: Many resource names are restricted to RFC 1123, as outlined [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
 Process Types: The name of a process in a Cloud Native Buildpacks result as [described in `launch.toml`](https://github.com/buildpacks/spec/blob/main/buildpack.md#launchtoml-toml).
 
 # Motivation
@@ -45,7 +45,7 @@ The current Buildpack specification defines these process type restrictions:
 
 > MUST only contain numbers, letters, and the characters ., \_, and -.
 
-While RFC1123 uses a stricter syntax with these notable differences:
+While RFC 1123 uses a stricter syntax with these notable differences:
 
 - Underscores (`_`) are not allowed
 - Periods (`.`) are not allowed
@@ -53,27 +53,29 @@ While RFC1123 uses a stricter syntax with these notable differences:
 - Uppercase and lowercase letters are not differentiated
 - Must be 63 characters or less
 
-The buildpack specification will be modified to match RFC1123 2.1.
+The buildpack specification will be modified to match RFC 1123 2.1.
 
 # How it Works
 
-The platform specification will be changed to reject process types that do not comply with RFC1123 2.1. For maximum compatibility with Kubernetes resource names, the Kubernetes regular expression will be used:
+The platform specification will be changed to reject process types that do not comply with RFC 1123 2.1. For maximum compatibility with Kubernetes resource names, the Kubernetes regular expression will be used:
 
 ```
 /[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/
 ```
 
-When a process name fails to meet this expression, appropriate error messaging may be given by the platform, for example:
+When a process type fails to meet this expression, appropriate error messaging may be given by the platform, for example:
 
 ```
 The "Static_Assets" process type must comply with RFC 1123 host name syntax. Underscores are not allowed. Uppercase letters are not allowed."
 ```
 
+While uppercase letters are allowed in RFC 1123, uppercase and lowercase are not differentiated -- `API` and `api` are the same. DNS providers and Kubernetes enforce (or coerce) uppercase to lowercase to prevent duplicate entries with different casing. The buildpack spec should also enforce lowercase letters for the same reason.
+
 # Migration
 
 This is a breaking API change, and will require a new Buildpack API version.
 
-This may require buildpacks to change the way process types are defined. For buildpacks using statically chosen process types that do not comply with RFC1123, they'll need to change the chosen process types. For buildpacks using dynamically assigned process types, they'll need to coerce process types (by substitution and/or truncation) to meet the specification or risk builds failing when the dynamically chosen name does not comply.
+This may require buildpacks to change the way process types are defined. For buildpacks using statically chosen process types that do not comply with RFC 1123, they'll need to change the chosen process types. For buildpacks using dynamically assigned process types, they'll need to coerce process types (by substitution and/or truncation) to meet the specification or risk builds failing when the dynamically chosen name does not comply.
 
 # Drawbacks
 
