@@ -71,7 +71,7 @@ While uppercase letters are allowed in RFC 1123, uppercase and lowercase are not
 
 This is a breaking API change, and will require a new Buildpack API version.
 
-This may require buildpacks to change the way process types are defined. For buildpacks using statically chosen process types that do not comply with RFC 1123, they'll need to change the chosen process types. For buildpacks using dynamically assigned process types, they'll need to coerce process types (by substitution and/or truncation) to meet the specification or risk builds failing when the dynamically chosen name does not comply.
+Buildpacks specifying process types that do not comply with the stricter requirements proposed in this RFC will need to change the way process types are defined. Buildpacks defining process types dynamically should implement logic to coerce process types (by substitution, filtering and/or truncation) to meet the specification and avoid build failures.
 
 # Drawbacks
 
