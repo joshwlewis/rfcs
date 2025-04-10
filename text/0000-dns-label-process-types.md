@@ -55,7 +55,7 @@ While DNS Labels as defined in RFC 1123 are more restrictive. Some notable diffe
 - Uppercase and lowercase letters are not differentiated
 - Must be less than 63 characters
 
-The buildpack specification will be modified to match RFC 1123 for DNS Labels.
+The buildpack specification will be modified to require process types compatible with RFC 1123 for DNS Labels, and require lowercase letters for compatibility with Kubernetes.
 
 # How it Works
 
