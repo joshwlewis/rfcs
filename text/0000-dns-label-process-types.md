@@ -23,7 +23,7 @@ Process type identifiers, as defined in the Cloud Native Buildpacks buildpack sp
 
 # Motivation
 
-The images resulting from CNB builds are often deployed to internet connected environments, where it's useful to connect or manage the image lifecycle with a domain name.
+The images resulting from CNB builds are often deployed to internet connected environments, where it's useful to connect or manage the image lifecycle with an internet routable domain name.
 
 For example, after building a web service image with Cloud Native Buildpacks, developers might want to expose various processes to the internet like static-assets.myapp.com and api.myapp.com. However, process types may currently include `_`, making process types like `Static_Assets` allowed, but not internet routable -- `Static_Assets.myapp.com` is not a valid domain name.
 
