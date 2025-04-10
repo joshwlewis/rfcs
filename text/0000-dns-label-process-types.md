@@ -59,7 +59,7 @@ The buildpack specification will be modified to require process types compatible
 
 # How it Works
 
-The platform specification will be changed to reject process types that do not comply with RFC 1123 DNS Labels. When a process type fails to meet this syntax, appropriate error messaging may be given by the platform, for example:
+The platform specification will be changed to reject process types that do not comply with lowercased RFC 1123 DNS Labels. When a process type fails to meet this syntax, appropriate error messaging may be given by the platform, for example:
 
 ```
 The "Static_Assets" process type must comply with RFC 1123 DNS label syntax. Underscores are not allowed. Uppercase letters are not allowed."
