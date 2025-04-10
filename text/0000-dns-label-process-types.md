@@ -11,7 +11,7 @@
 
 # Summary
 
-Process types in the Cloud Native Buildpacks buildpack specification are less restrictive than the RFC 1123 DNS label definition. Therefore, CNB process types may not be compatible with internet routing or kubernetes resource naming. This RFC proposes to restrict CNB process types to meet RFC 1123 and increase usage compatibility with other CNCF / OSS usage.
+Process type identifiers, as defined in the Cloud Native Buildpacks buildpack specification, are less restrictive than the RFC 1123 DNS label definition. Therefore, CNB process types may not be compatible with internet routing or Kubernetes resource naming. This RFC proposes stricter process type identifier requirements to increase compatibility with other CNCF / OSS projects as well as RFC 1123.
 
 # Definitions
 
