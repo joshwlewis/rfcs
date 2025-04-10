@@ -19,7 +19,7 @@ Process type identifiers, as defined in the Cloud Native Buildpacks buildpack sp
 
 **Kubernetes Resource Names**: Many resource names are restricted to RFC 1123, as outlined [here](https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names).
 
-**Process Types**: The name of a process in a Cloud Native Buildpacks result as [described in `launch.toml`](https://github.com/buildpacks/spec/blob/main/buildpack.md#launchtoml-toml).
+**Process Type**: The `type` identifier for a launch process as [specified in `launch.toml`](https://github.com/buildpacks/spec/blob/main/buildpack.md#launchtoml-toml).
 
 # Motivation
 
