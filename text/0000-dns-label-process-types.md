@@ -62,7 +62,7 @@ The buildpack specification will be modified to require process types compatible
 The platform specification will be changed to reject process types that do not comply with lowercased RFC 1123 DNS Labels. When a process type fails to meet this syntax, appropriate error messaging may be given by the platform, for example:
 
 ```
-The "Static_Assets" process type must comply with RFC 1123 DNS label syntax. Underscores are not allowed. Uppercase letters are not allowed."
+The "Static_Assets" process type must comply with lowercased RFC 1123 DNS label syntax. Underscores are not allowed. Uppercase letters are not allowed."
 ```
 
 While uppercase letters are allowed in RFC 1123, uppercase and lowercase are not differentiated -- `API` and `api` are the same. DNS providers and Kubernetes enforce (or coerce) uppercase to lowercase to prevent duplicate entries with different casing. The buildpack spec should also enforce lowercase letters for the same reason.
