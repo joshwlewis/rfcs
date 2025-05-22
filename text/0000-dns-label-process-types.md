@@ -73,6 +73,14 @@ This is a breaking API change, and will require a new Buildpack API version.
 
 Buildpacks specifying process types that do not comply with the stricter requirements proposed in this RFC will need to change the way process types are defined. Buildpacks defining process types dynamically should implement logic to coerce process types (by substitution, filtering and/or truncation) to meet the specification and avoid build failures.
 
+In order to ease the transition, a new flag may be introduced to pack and/or lifecycle to control enforcement of this requirement. For example, a `--strict-process-types` flag could be introduced that might be set to `warn` or `error`. Calls with `pack build foo --strict-process-types=error ...` would emit error messages and reject builds with non-compliant process types while calls with `pack build foo --strict-process-types=warn ...` would emit warning messages while still allowing the build to complete.
+
+With a flag like this, the migration could be split into phases:
+
+Phase 1: `--strict-process-types` has a default value of `warn`
+Phase 2: `--strict-process-types` has a default value of `error`
+Phase 3 (optional): `--strict-process-types` is always `error`
+
 # Drawbacks
 
 - It's a breaking API change and will cause ecosystem churn.
