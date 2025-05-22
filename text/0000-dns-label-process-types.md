@@ -81,7 +81,7 @@ Buildpacks specifying process types that do not comply with the stricter require
 
 ## Enforce RFC 1123 host names
 
-Instead of enforcing the DNS label syntax, enforce the host name syntax. This would allow periods (in correct postions) and allow up to 254 characters.
+Instead of enforcing the DNS label syntax, enforce the host name syntax. This would allow periods (in correct postions) and allow up to 253 characters.
 
 Pros:
 
